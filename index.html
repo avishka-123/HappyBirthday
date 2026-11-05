@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Little Surprise For You, Bubs! ❤️</title>
+    <title>27 Beautiful Years | A Little Birthday Surprise for Bubs ❤️</title>
+    <meta name="description" content="A little birthday surprise celebrating 27 beautiful years since 6 November 1999."/>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -91,8 +92,40 @@
     <!-- Main Container -->
     <main class="relative z-10 w-full max-w-md mx-auto my-auto">
         
+        <!-- Screen 0: Birthday Story Opening -->
+        <div id="screen-0" class="screen transition-all duration-700 opacity-100 transform translate-y-0">
+            <div class="glass-card screen-card rounded-3xl p-7 sm:p-8 text-center border border-pink-200/60 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-12 -right-10 w-36 h-36 rounded-full bg-pink-200/40 blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-10 w-36 h-36 rounded-full bg-rose-200/50 blur-2xl pointer-events-none"></div>
+                <div class="relative z-10">
+                    <div class="text-xs tracking-[0.22em] text-rose-500 font-bold uppercase mb-4">A day worth celebrating</div>
+                    <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-rose-100 to-pink-200 flex items-center justify-center shadow-inner floating-graphic">
+                        <svg viewBox="0 0 24 24" class="w-8 h-8 text-rose-500" fill="currentColor" aria-hidden="true"><path d="M12 2a1 1 0 0 1 1 1v1.07a8.01 8.01 0 0 1 6.93 6.93H21a1 1 0 1 1 0 2h-1.07A8.01 8.01 0 0 1 13 19.93V21a1 1 0 1 1-2 0v-1.07A8.01 8.01 0 0 1 4.07 13H3a1 1 0 1 1 0-2h1.07A8.01 8.01 0 0 1 11 4.07V3a1 1 0 0 1 1-1Zm0 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z"/></svg>
+                    </div>
+                    <p class="handwritten text-2xl text-rose-500 font-bold mb-1">6 November 1999</p>
+                    <div class="my-4">
+                        <div class="romantic-title text-7xl sm:text-8xl font-bold gradient-text leading-none sparkle">27</div>
+                        <div class="text-xs tracking-[0.28em] text-rose-400 font-semibold uppercase mt-2">beautiful years</div>
+                    </div>
+                    <h1 class="romantic-title text-2xl sm:text-3xl font-bold text-rose-900 leading-snug mb-4">27 years ago today…</h1>
+                    <div class="bg-white/70 rounded-2xl p-5 mb-5 border border-pink-100/90">
+                        <p class="text-gray-700 text-sm leading-relaxed">
+                            The world welcomed someone who would grow up to become a very special person.
+                        </p>
+                        <p class="text-gray-600 text-sm leading-relaxed mt-3">
+                            And 27 years later, an overthinking IT guy has been busy making a little birthday surprise for her. 🤭
+                        </p>
+                    </div>
+                    <p class="handwritten text-xl text-rose-600 font-bold mb-5">Because some people deserve a little extra sparkle. ✨</p>
+                    <button onclick="goToScreen(1)" class="w-full py-4 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 hover:from-pink-600 hover:to-rose-600 text-white font-semibold rounded-2xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all duration-200">
+                        There's a little surprise for you ♡
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Screen 1: Welcome & A Small Surprise -->
-        <div id="screen-1" class="screen transition-all duration-700 opacity-100 transform translate-y-0">
+        <div id="screen-1" class="screen hidden transition-all duration-700 opacity-0 transform translate-y-8">
             <div class="glass-card screen-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
                 <!-- Gift Box Vector Graphic -->
                 <div class="w-24 h-24 mx-auto mb-4 floating-graphic flex items-center justify-center">
@@ -331,7 +364,7 @@
 
     <!-- Application Logic Script -->
     <script>
-        let currentScreen = 1;
+        let currentScreen = 0;
         let transitionLocked = false;
         let candleBlown = false;
         let micStream = null;
@@ -555,7 +588,7 @@
             setMicMessage('Take a deep breath and blow towards your screen! 💨 Mic-shy? Just tap the cake and let those candles go! 🤭');
             document.getElementById('screen-dark').classList.add('opacity-0', 'pointer-events-none');
             document.getElementById('screen-dark').classList.remove('opacity-100');
-            goToScreen(1);
+            goToScreen(0);
         }
 
         window.addEventListener('pagehide', stopMicrophone);
