@@ -10,19 +10,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- EmailJS: sends a single notification when the final letter page is reached -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-        (function() {
-            emailjs.init("ioHK4BbS4ODcoC6Hs");
-        })();
+        window.addEventListener('load', function () {
+            if (window.emailjs) emailjs.init("ioHK4BbS4ODcoC6Hs");
+        });
     </script>
     <style>
+        html { scroll-behavior: smooth; }
         body {
+            min-height: 100svh;
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #fff0f5 0%, #ffe4e6 40%, #fce7f3 100%);
             overflow-x: hidden;
         }
+        button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        .screen { width: 100%; }
+        .screen-card { animation: cardIn .65s cubic-bezier(.2,.8,.2,1) both; }
+        @keyframes cardIn { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .sparkle { text-shadow: 0 0 18px rgba(244,63,94,.35); }
+        .mic-listening { animation: micPulse 1s ease-in-out infinite; }
+        @keyframes micPulse { 50% { box-shadow: 0 0 0 8px rgba(244,63,94,.12); } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
         .romantic-title {
             font-family: 'Playfair Display', serif;
         }
@@ -64,21 +74,9 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
-        /* Custom scrollbar for message card */
-        .custom-scroll::-webkit-scrollbar {
-            width: 5px;
-        }
-        .custom-scroll::-webkit-scrollbar-track {
-            background: rgba(255, 192, 203, 0.2);
-            border-radius: 10px;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(244, 114, 182, 0.5);
-            border-radius: 10px;
-        }
     </style>
 </head>
-<body class="h-full flex items-center justify-center p-4 selection:bg-pink-200 selection:text-pink-900 min-h-screen">
+<body class="min-h-screen flex items-center justify-center px-4 py-7 sm:py-10 selection:bg-pink-200 selection:text-pink-900">
 
     <!-- Premium Animated Background Graphics -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-40">
@@ -96,11 +94,11 @@
     </div>
 
     <!-- Main Container -->
-    <div class="relative z-10 w-full max-w-md mx-auto my-auto">
+    <main class="relative z-10 w-full max-w-md mx-auto my-auto">
         
         <!-- Screen 1: Welcome & A Small Surprise -->
         <div id="screen-1" class="screen transition-all duration-700 opacity-100 transform translate-y-0">
-            <div class="glass-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
+            <div class="glass-card screen-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
                 <!-- Gift Box Vector Graphic -->
                 <div class="w-24 h-24 mx-auto mb-4 floating-graphic flex items-center justify-center">
                     <svg viewBox="0 0 64 64" fill="none" class="w-full h-full drop-shadow-md">
@@ -130,7 +128,7 @@
 
         <!-- Screen 2: Make a Wish -->
         <div id="screen-2" class="screen hidden transition-all duration-700 opacity-0 transform translate-y-8">
-            <div class="glass-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
+            <div class="glass-card screen-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
                 
                 <!-- Eye Cover / Wish Graphic -->
                 <div class="w-20 h-20 mx-auto mb-3 floating-graphic flex items-center justify-center">
@@ -179,12 +177,12 @@
 
         <!-- Screen 3: Happy Birthday Wish & Candle Interaction -->
         <div id="screen-3" class="screen hidden transition-all duration-700 opacity-0 transform translate-y-8">
-            <div class="glass-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
+            <div class="glass-card screen-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
                 <div class="text-xs tracking-widest text-pink-500 font-bold uppercase mb-1">Make It Come True</div>
                 <h1 class="romantic-title text-2xl font-bold gradient-text mb-2">Now blow out your candle! 🕯️</h1>
                 
                 <!-- Premium Custom Birthday Cake SVG Graphic -->
-                <div class="my-6 relative cursor-pointer group flex flex-col items-center justify-center" onclick="blowCandle()">
+                <div class="my-6 relative cursor-pointer group flex flex-col items-center justify-center" onclick="blowCandle()" role="button" tabindex="0" aria-label="Tap to blow out the birthday candles" onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault();blowCandle();}">
                     <div id="cake-graphic" class="relative inline-block p-2 transition-transform transform group-hover:scale-105">
                         
                         <!-- Flames -->
@@ -216,17 +214,20 @@
                     </div>
                 </div>
 
-                <div class="bg-pink-50/90 rounded-2xl p-4 mb-6 border border-pink-100">
-                    <p class="text-gray-600 text-sm">
-                        Take a deep breath and blow!<br>
-                        <span class="text-xs text-rose-500 font-medium">Or tap the cake if you prefer.</span>
+                <div class="bg-pink-50/90 rounded-2xl p-4 mb-5 border border-pink-100">
+                    <p id="candle-hint" class="text-gray-600 text-sm leading-relaxed">
+                        Take a deep breath and blow towards your screen!<br>
+                        <span class="text-xs text-rose-500 font-medium">You can use your microphone or simply tap the button.</span>
                     </p>
                 </div>
 
-                <button onclick="blowCandle()" class="w-full py-4 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold rounded-2xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2a1 1 0 011 1v3a1 1 0 11-2 0V3a1 1 0 011-1zm0 15a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm10-7a1 1 0 01-1 1h-3a1 1 0 110-2h3a1 1 0 011 1zM6 11a1 1 0 110 2H3a1 1 0 110-2h3zm12.364-5.364a1 1 0 010 1.414l-2.121 2.121a1 1 0 01-1.415-1.414l2.122-2.121a1 1 0 011.414 0zM7.757 16.243a1 1 0 010 1.414L5.636 19.78a1 1 0 01-1.415-1.415l2.122-2.121a1 1 0 011.414 0z"/></svg>
-                    <span>Blow out the candle</span>
+                <button id="mic-button" onclick="startBlowDetection()" class="w-full py-3.5 mb-3 bg-white border border-rose-200 text-rose-600 font-semibold rounded-2xl shadow-sm hover:bg-rose-50 active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <span aria-hidden="true">🎤</span><span id="mic-button-label">Blow with microphone</span>
                 </button>
+                <button id="manual-blow-button" onclick="blowCandle()" class="w-full py-4 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold rounded-2xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <span aria-hidden="true">✨</span><span>Tap to blow out the candles</span>
+                </button>
+                <p class="mt-3 text-[11px] text-rose-400">Microphone access is optional. Nothing is recorded or sent.</p>
             </div>
         </div>
 
@@ -243,7 +244,7 @@
 
         <!-- Screen 4: Celebration & Birthday Reveal -->
         <div id="screen-4" class="screen hidden transition-all duration-1000 opacity-0 transform translate-y-8">
-            <div class="glass-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
+            <div class="glass-card screen-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
                 <!-- Bouquet SVG Graphic -->
                 <div class="w-20 h-20 mx-auto mb-3 floating-graphic flex items-center justify-center">
                     <svg viewBox="0 0 64 64" fill="none" class="w-full h-full drop-shadow-md">
@@ -275,7 +276,7 @@
 
         <!-- Screen 5: Final Romantic Birthday Wish (Redesigned with Beautiful Fonts & Colors) -->
         <div id="screen-5" class="screen hidden transition-all duration-1000 opacity-0 transform translate-y-8">
-            <div class="romantic-card-bg rounded-3xl p-6 sm:p-8 text-left shadow-2xl my-4 relative overflow-hidden">
+            <div class="romantic-card-bg screen-card rounded-3xl p-6 sm:p-8 text-left shadow-2xl my-2 sm:my-4 relative overflow-hidden">
                 
                 <!-- Background Glowing SVG Heart Accent -->
                 <div class="absolute -top-10 -right-10 opacity-10 pointer-events-none">
@@ -292,11 +293,7 @@
                 </div>
 
                 <!-- Letter Body -->
-                <div class="space-y-4 text-gray-700 text-sm leading-relaxed border-t border-rose-200/80 pt-5 max-h-[52vh] overflow-y-auto pr-2 custom-scroll relative z-10">
-                    <p class="romantic-title text-base font-bold text-rose-900 border-l-4 border-rose-400 pl-3 py-0.5 bg-rose-50/60 rounded-r-lg">
-                        Happy Birthday, Bubs! ❤️
-                    </p>
-                    
+                <div class="space-y-4 text-gray-700 text-sm leading-relaxed border-t border-rose-200/80 pt-5 relative z-10">
                     <p class="text-gray-700">
                         I hope you liked the little surprise I sent your way. I picked the peach cake and flowers hoping they'd bring a smile to your face. The flowers were beautiful, but still not as beautiful as you. 🥹❤️
                     </p>
@@ -332,153 +329,218 @@
             </div>
         </div>
 
-    </div>
+    </main>
 
     <!-- Application Logic Script -->
     <script>
+        let currentScreen = 1;
+        let transitionLocked = false;
+        let candleBlown = false;
+        let micStream = null;
+        let audioContext = null;
+        let animationFrame = null;
+        let micTimeout = null;
+        let finalPageNotificationSent = false;
+
         const EMAILJS_SERVICE_ID = "service_57lvxmw";
         const EMAILJS_TEMPLATE_ID = "template_97uucja";
 
-        // Store activity log to send ONCE in a single aggregated email at the end
-        let activityLogs = [];
+        // This confirms that the final letter page was opened; it cannot confirm that the letter was read.
+        function sendFinalPageNotification() {
+            if (finalPageNotificationSent) return;
+            finalPageNotificationSent = true;
 
-        function logActivity(stepName) {
-            const timeStr = new Date().toLocaleTimeString();
-            activityLogs.push(`• <b>${stepName}</b> at ${timeStr}`);
-        }
-
-        // Send a single summary email when reaching the final page
-        function sendFinalSummaryEmail() {
-            logActivity("Screen 5 - Final Romantic Wish Page Reached");
+            if (!window.emailjs) {
+                console.warn('EmailJS did not load; final-page notification was not sent.');
+                return;
+            }
 
             const templateParams = {
-                steps_summary: activityLogs.join('<br>'),
+                steps_summary: 'Bubs reached the final birthday letter page.',
                 timestamp: new Date().toLocaleString()
             };
 
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-                .then(function(response) {
-                    console.log('Summary EmailJS Sent!', response.status, response.text);
-                }, function(error) {
-                    console.error('EmailJS Failed:', error);
+                .then(function (response) {
+                    console.log('Final-page notification sent.', response.status, response.text);
+                })
+                .catch(function (error) {
+                    console.error('Final-page notification failed:', error);
+                    finalPageNotificationSent = false;
                 });
         }
 
-        // Initialize Screen 1 activity log
-        logActivity("Screen 1 - Opened Welcome Surprise");
-
-        function goToScreen(screenNumber) {
-            // Hide current screen
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(s => {
-                s.classList.add('opacity-0', 'transform', 'translate-y-8');
-                setTimeout(() => s.classList.add('hidden'), 350);
-            });
-
-            // Log step activity
-            if (screenNumber === 2) logActivity("Screen 2 - Opened Make a Wish");
-            if (screenNumber === 3) logActivity("Screen 3 - Candle & Cake Interaction Prompt");
-            if (screenNumber === 4) logActivity("Screen 4 - Celebration Screen");
-            if (screenNumber === 5) {
-                // Trigger single summary email dispatch when she reaches the final wish page
-                sendFinalSummaryEmail();
-            }
-
-            // Show target screen after transition
-            setTimeout(() => {
-                const target = document.getElementById(`screen-${screenNumber}`);
-                if (target) {
-                    target.classList.remove('hidden');
-                    void target.offsetWidth; // trigger reflow
-                    target.classList.remove('opacity-0', 'transform', 'translate-y-8');
-                    target.classList.add('opacity-100', 'translate-y-0');
-                }
-            }, 350);
+        function stopMicrophone() {
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+            if (micTimeout) clearTimeout(micTimeout);
+            animationFrame = null;
+            micTimeout = null;
+            if (micStream) micStream.getTracks().forEach(track => track.stop());
+            micStream = null;
+            if (audioContext && audioContext.state !== 'closed') audioContext.close().catch(() => {});
+            audioContext = null;
+            const micButton = document.getElementById('mic-button');
+            if (micButton) micButton.classList.remove('mic-listening');
         }
 
-        // Handles inline transition on Screen 2
+        function setMicMessage(message, buttonLabel = 'Blow with microphone') {
+            const hint = document.getElementById('candle-hint');
+            const label = document.getElementById('mic-button-label');
+            if (hint) hint.textContent = message;
+            if (label) label.textContent = buttonLabel;
+        }
+
+        function goToScreen(screenNumber) {
+            if (transitionLocked || screenNumber === currentScreen) return;
+            transitionLocked = true;
+            stopMicrophone();
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.add('hidden', 'opacity-0', 'translate-y-8');
+                screen.classList.remove('opacity-100', 'translate-y-0');
+            });
+            const target = document.getElementById(`screen-${screenNumber}`);
+            if (target) {
+                target.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    target.classList.remove('opacity-0', 'translate-y-8');
+                    target.classList.add('opacity-100', 'translate-y-0');
+                });
+                currentScreen = screenNumber;
+                if (screenNumber === 5) sendFinalPageNotification();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => { transitionLocked = false; }, 420);
+        }
+
         function triggerSecondWishAttempt() {
-            logActivity("Screen 2 - Clicked First Wish Done");
             const stage1 = document.getElementById('wish-stage-1');
             const stage2 = document.getElementById('wish-stage-2');
-
             stage1.classList.add('opacity-0');
             setTimeout(() => {
                 stage1.classList.add('hidden');
                 stage2.classList.remove('hidden');
-                void stage2.offsetWidth;
-                stage2.classList.remove('opacity-0');
-                stage2.classList.add('opacity-100');
-            }, 300);
+                requestAnimationFrame(() => {
+                    stage2.classList.remove('opacity-0');
+                    stage2.classList.add('opacity-100');
+                });
+            }, 280);
+        }
+
+        async function startBlowDetection() {
+            if (candleBlown) return;
+            const micButton = document.getElementById('mic-button');
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.AudioContext) {
+                setMicMessage('Microphone blowing is not available in this browser or page. No worries — tap the pink button below!');
+                return;
+            }
+            try {
+                micButton.disabled = true;
+                setMicMessage('Allow microphone access, then give a gentle blow towards your microphone…', 'Waiting for microphone…');
+                micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false });
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioContext.createMediaStreamSource(micStream);
+                const analyser = audioContext.createAnalyser();
+                analyser.fftSize = 1024;
+                source.connect(analyser);
+                const samples = new Uint8Array(analyser.fftSize);
+                micButton.disabled = false;
+                micButton.classList.add('mic-listening');
+                setMicMessage('I’m listening… take a breath and blow now! 💨', 'Listening… blow now!');
+                let loudFrames = 0;
+                const listen = () => {
+                    if (!micStream || candleBlown) return;
+                    analyser.getByteTimeDomainData(samples);
+                    let sum = 0;
+                    for (let i = 0; i < samples.length; i++) {
+                        const value = (samples[i] - 128) / 128;
+                        sum += value * value;
+                    }
+                    const rms = Math.sqrt(sum / samples.length);
+                    loudFrames = rms > 0.105 ? loudFrames + 1 : Math.max(0, loudFrames - 1);
+                    if (loudFrames >= 7) {
+                        stopMicrophone();
+                        blowCandle();
+                        return;
+                    }
+                    animationFrame = requestAnimationFrame(listen);
+                };
+                listen();
+                micTimeout = setTimeout(() => {
+                    stopMicrophone();
+                    if (!candleBlown) {
+                        setMicMessage('That’s okay! Try once more, or use the pink tap button instead. ❤️');
+                        micButton.disabled = false;
+                    }
+                }, 12000);
+            } catch (error) {
+                stopMicrophone();
+                micButton.disabled = false;
+                const message = error && error.name === 'NotAllowedError'
+                    ? 'Microphone permission was not enabled. That’s completely okay — tap the pink button below instead. ❤️'
+                    : 'Couldn’t access the microphone on this device. The pink tap button works just as well!';
+                setMicMessage(message);
+            }
         }
 
         function blowCandle() {
-            logActivity("Screen 3 - Candle Extinguished / Blow Triggered");
-
-            // Extinguish flames
+            if (candleBlown) return;
+            candleBlown = true;
+            stopMicrophone();
+            const micButton = document.getElementById('mic-button');
+            const manualButton = document.getElementById('manual-blow-button');
+            if (micButton) micButton.disabled = true;
+            if (manualButton) manualButton.disabled = true;
             const flames = document.getElementById('candle-flames');
             if (flames) flames.classList.add('candle-extinguished');
-
-            // Trigger dark screen transition
             const darkScreen = document.getElementById('screen-dark');
-            darkScreen.classList.remove('pointer-events-none');
-            darkScreen.classList.remove('opacity-0');
+            darkScreen.classList.remove('pointer-events-none', 'opacity-0');
             darkScreen.classList.add('opacity-100');
-
-            // Transition to Screen 4 celebration with confetti
             setTimeout(() => {
                 darkScreen.classList.remove('opacity-100');
-                darkScreen.classList.add('opacity-0');
-                darkScreen.classList.add('pointer-events-none');
-
-                // Hide Screen 3 & show Screen 4
+                darkScreen.classList.add('opacity-0', 'pointer-events-none');
                 const s3 = document.getElementById('screen-3');
-                s3.classList.add('opacity-0', 'hidden');
-
                 const s4 = document.getElementById('screen-4');
+                s3.classList.add('hidden', 'opacity-0', 'translate-y-8');
+                s3.classList.remove('opacity-100', 'translate-y-0');
                 s4.classList.remove('hidden');
-                void s4.offsetWidth;
-                s4.classList.remove('opacity-0', 'transform', 'translate-y-8');
-                s4.classList.add('opacity-100', 'translate-y-0');
-
-                // Trigger confetti burst
+                requestAnimationFrame(() => {
+                    s4.classList.remove('opacity-0', 'translate-y-8');
+                    s4.classList.add('opacity-100', 'translate-y-0');
+                });
+                currentScreen = 4;
                 triggerConfetti();
-            }, 2300);
+                setTimeout(triggerConfetti, 850);
+            }, 1800);
         }
 
         function triggerConfetti() {
-            var count = 200;
-            var defaults = { origin: { y: 0.7 } };
-
-            function fire(particleRatio, opts) {
-              confetti(Object.assign({}, defaults, opts, {
-                particleCount: Math.floor(count * particleRatio)
-              }));
-            }
-
-            fire(0.25, { spread: 26, startVelocity: 55, colors: ['#ff69b4', '#ff1493', '#ffc0cb'] });
-            fire(0.2, { spread: 60, colors: ['#ffffff', '#ffb6c1', '#db7093'] });
-            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, colors: ['#ff69b4', '#fff0f5'] });
-            fire(0.1, { spread: 120, startVelocity: 45 });
+            if (typeof confetti !== 'function') return;
+            const colors = ['#ff69b4', '#ff1493', '#ffc0cb', '#f9c74f', '#ffffff'];
+            confetti({ particleCount: 85, spread: 75, startVelocity: 38, origin: { y: 0.68 }, colors });
+            setTimeout(() => confetti({ particleCount: 55, spread: 105, startVelocity: 28, origin: { y: 0.62 }, colors }), 180);
         }
 
         function restartExperience() {
-            activityLogs = [];
-            logActivity("Screen 1 - Restarted Experience");
-
-            // Reset stage 1/stage 2 inside Screen 2
+            stopMicrophone();
+            candleBlown = false;
             const stage1 = document.getElementById('wish-stage-1');
             const stage2 = document.getElementById('wish-stage-2');
             stage1.classList.remove('hidden', 'opacity-0');
             stage2.classList.add('hidden', 'opacity-0');
-
-            // Reset candle flame
             const flames = document.getElementById('candle-flames');
             if (flames) flames.classList.remove('candle-extinguished');
-
+            const micButton = document.getElementById('mic-button');
+            const manualButton = document.getElementById('manual-blow-button');
+            if (micButton) micButton.disabled = false;
+            if (manualButton) manualButton.disabled = false;
+            setMicMessage('Take a deep breath and blow towards your screen! You can use your microphone or simply tap the button.');
+            document.getElementById('screen-dark').classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('screen-dark').classList.remove('opacity-100');
             goToScreen(1);
         }
+
+        window.addEventListener('pagehide', stopMicrophone);
     </script>
 </body>
 </html>
