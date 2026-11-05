@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Little Surprise For You, Bubs! ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("ioHK4BbS4ODcoC6Hs");
+        })();
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e6 40%, #fce7f3 100%);
+            overflow-x: hidden;
+        }
+        .romantic-title {
+            font-family: 'Playfair Display', serif;
+        }
+        .handwritten {
+            font-family: 'Dancing Script', cursive;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 182, 193, 0.5);
+            box-shadow: 0 20px 50px rgba(255, 105, 180, 0.18);
+        }
+        .romantic-card-bg {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 240, 245, 0.95) 100%);
+            border: 1px solid rgba(244, 114, 182, 0.35);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #e11d48 0%, #db2777 50%, #f43f5e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(4deg); }
+        }
+        .floating-graphic {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+        @keyframes flameFlicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 0.95; filter: drop-shadow(0 0 8px #ff9d00); }
+            50% { transform: scale(1.15) rotate(3deg); opacity: 1; filter: drop-shadow(0 0 15px #ff5e00); }
+            100% { transform: scale(0.95) rotate(-3deg); opacity: 0.9; filter: drop-shadow(0 0 6px #ff9d00); }
+        }
+        .flame-active {
+            animation: flameFlicker 0.4s infinite alternate ease-in-out;
+            transform-origin: bottom center;
+        }
+        .candle-extinguished {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        /* Custom scrollbar for message card */
+        .custom-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 192, 203, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(244, 114, 182, 0.5);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="h-full flex items-center justify-center p-4 selection:bg-pink-200 selection:text-pink-900 min-h-screen">
+
+    <!-- Premium Animated Background Graphics -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-40">
+        <!-- Heart SVG Floating Left Top -->
+        <svg class="absolute top-8 left-8 w-12 h-12 floating-graphic" style="animation-delay: 0s;" viewBox="0 0 24 24" fill="#f472b6"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        
+        <!-- Sparkle SVG Right Top -->
+        <svg class="absolute top-1/4 right-10 w-10 h-10 floating-graphic" style="animation-delay: 1.2s;" viewBox="0 0 24 24" fill="#fb7185"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/></svg>
+        
+        <!-- Heart SVG Bottom Left -->
+        <svg class="absolute bottom-16 left-12 w-14 h-14 floating-graphic" style="animation-delay: 2.1s;" viewBox="0 0 24 24" fill="#f43f5e"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        
+        <!-- Flower SVG Bottom Right -->
+        <svg class="absolute bottom-1/3 right-12 w-12 h-12 floating-graphic" style="animation-delay: 1.8s;" viewBox="0 0 24 24" fill="#f472b6"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,22M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4Z"/></svg>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 w-full max-w-md mx-auto my-auto">
+        
+        <!-- Screen 1: Welcome & A Small Surprise -->
+        <div id="screen-1" class="screen transition-all duration-700 opacity-100 transform translate-y-0">
+            <div class="glass-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
+                <!-- Gift Box Vector Graphic -->
+                <div class="w-24 h-24 mx-auto mb-4 floating-graphic flex items-center justify-center">
+                    <svg viewBox="0 0 64 64" fill="none" class="w-full h-full drop-shadow-md">
+                        <rect x="8" y="24" width="48" height="34" rx="4" fill="#FB7185"/>
+                        <path d="M6 16C6 14.3431 7.34315 13 9 13H55C56.6569 13 58 14.3431 58 16V24H6V16Z" fill="#F43F5E"/>
+                        <rect x="28" y="13" width="8" height="45" fill="#FFE4E6"/>
+                        <path d="M32 13C32 13 24 3 17 6C12 8.14286 16 13 32 13Z" fill="#FFE4E6"/>
+                        <path d="M32 13C32 13 40 3 47 6C52 8.14286 48 13 32 13Z" fill="#FFE4E6"/>
+                    </svg>
+                </div>
+
+                <div class="text-xs tracking-widest text-rose-500 font-bold uppercase mb-2">A Little Surprise For You</div>
+                <h1 class="romantic-title text-3xl font-bold gradient-text mb-2">Hey, Bubs! ♡</h1>
+                <p class="text-gray-600 text-sm mb-6">I have a tiny birthday challenge for you...</p>
+                
+                <div class="bg-pink-50/90 rounded-2xl p-5 mb-6 border border-pink-100/80">
+                    <p class="text-gray-700 text-sm font-medium">
+                        Are you ready to begin? ✨
+                    </p>
+                </div>
+
+                <button onclick="goToScreen(2)" class="w-full py-4 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 hover:from-pink-600 hover:to-rose-600 text-white font-semibold rounded-2xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all duration-200">
+                    Let's play ✨
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Make a Wish -->
+        <div id="screen-2" class="screen hidden transition-all duration-700 opacity-0 transform translate-y-8">
+            <div class="glass-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
+                
+                <!-- Eye Cover / Wish Graphic -->
+                <div class="w-20 h-20 mx-auto mb-3 floating-graphic flex items-center justify-center">
+                    <svg viewBox="0 0 64 64" fill="none" class="w-full h-full drop-shadow-sm">
+                        <circle cx="32" cy="32" r="30" fill="#FFE4E6"/>
+                        <path d="M18 28C22 34 26 34 30 28" stroke="#F43F5E" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M34 28C38 34 42 34 46 28" stroke="#F43F5E" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M20 40C24 45 40 45 44 40" stroke="#F43F5E" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <!-- Stage 1 Content -->
+                <div id="wish-stage-1">
+                    <div class="text-xs tracking-widest text-pink-500 font-bold uppercase mb-2">Close your eyes... 🙈</div>
+                    <h2 class="romantic-title text-3xl font-bold gradient-text mb-3">✨ Make a wish ✨</h2>
+                    
+                    <div class="bg-pink-50/90 rounded-2xl p-5 mb-6 border border-pink-100">
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Think of something you've been wishing for. Something that would make you really happy.
+                        </p>
+                    </div>
+
+                    <button onclick="triggerSecondWishAttempt()" class="w-full py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-2xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all">
+                        I've made my wish! ✨
+                    </button>
+                </div>
+
+                <!-- Stage 2 Content (Playful second confirmation) -->
+                <div id="wish-stage-2" class="hidden opacity-0 transition-opacity duration-500">
+                    <div class="text-xs tracking-widest text-rose-500 font-bold uppercase mb-2">Wait a minute! 😏</div>
+                    <h2 class="romantic-title text-2xl font-bold gradient-text mb-3">Have you REALLY wished?</h2>
+                    
+                    <div class="bg-rose-50/90 rounded-2xl p-5 mb-6 border border-rose-100">
+                        <p class="text-gray-700 text-sm leading-relaxed">
+                            No cheating! Close those eyes and wish properly this time. 🤭
+                        </p>
+                    </div>
+
+                    <button onclick="goToScreen(3)" class="w-full py-4 bg-gradient-to-r from-rose-500 to-pink-600 text-white font-semibold rounded-2xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all">
+                        Okay, I really have! ❤️
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Screen 3: Happy Birthday Wish & Candle Interaction -->
+        <div id="screen-3" class="screen hidden transition-all duration-700 opacity-0 transform translate-y-8">
+            <div class="glass-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
+                <div class="text-xs tracking-widest text-pink-500 font-bold uppercase mb-1">Make It Come True</div>
+                <h1 class="romantic-title text-2xl font-bold gradient-text mb-2">Now blow out your candle! 🕯️</h1>
+                
+                <!-- Premium Custom Birthday Cake SVG Graphic -->
+                <div class="my-6 relative cursor-pointer group flex flex-col items-center justify-center" onclick="blowCandle()">
+                    <div id="cake-graphic" class="relative inline-block p-2 transition-transform transform group-hover:scale-105">
+                        
+                        <!-- Flames -->
+                        <div id="candle-flames" class="flex justify-center gap-6 mb-[-6px] z-10 relative">
+                            <div class="w-3 h-5 bg-gradient-to-t from-amber-500 via-orange-400 to-yellow-200 rounded-full flame-active"></div>
+                            <div class="w-3 h-5 bg-gradient-to-t from-amber-500 via-orange-400 to-yellow-200 rounded-full flame-active" style="animation-delay: 0.15s;"></div>
+                            <div class="w-3 h-5 bg-gradient-to-t from-amber-500 via-orange-400 to-yellow-200 rounded-full flame-active" style="animation-delay: 0.3s;"></div>
+                        </div>
+
+                        <!-- Cake SVG -->
+                        <svg class="w-48 h-44 drop-shadow-xl" viewBox="0 0 160 140" fill="none">
+                            <!-- Candles -->
+                            <rect x="42" y="15" width="6" height="25" rx="3" fill="#FB7185"/>
+                            <rect x="77" y="15" width="6" height="25" rx="3" fill="#F43F5E"/>
+                            <rect x="112" y="15" width="6" height="25" rx="3" fill="#FB7185"/>
+                            
+                            <!-- Cake Top Layer -->
+                            <path d="M25 55C25 48 30 40 80 40C130 40 135 48 135 55V80H25V55Z" fill="#FFF0F5"/>
+                            <!-- Frosting Drips -->
+                            <path d="M25 55C30 62 38 62 43 55C48 62 56 62 61 55C66 62 74 62 79 55C84 62 92 62 97 55C102 62 110 62 115 55C120 62 128 62 135 55V68H25V55Z" fill="#FB7185"/>
+                            
+                            <!-- Cake Bottom Layer -->
+                            <path d="M15 80C15 75 20 70 80 70C140 70 145 75 145 80V120C145 125 135 130 80 130C25 130 15 125 15 120V80Z" fill="#FCE7F3"/>
+                            <path d="M15 95C25 102 35 102 45 95C55 102 65 102 75 95C85 102 95 102 105 95C115 102 125 102 135 95C140 98 143 100 145 102V120C145 125 135 130 80 130C25 130 15 125 15 120V102C17 100 20 98 25 95" fill="#F43F5E" opacity="0.8"/>
+                            
+                            <!-- Cake Plate -->
+                            <ellipse cx="80" cy="132" rx="72" ry="6" fill="#CBD5E1"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-pink-50/90 rounded-2xl p-4 mb-6 border border-pink-100">
+                    <p class="text-gray-600 text-sm">
+                        Take a deep breath and blow!<br>
+                        <span class="text-xs text-rose-500 font-medium">Or tap the cake if you prefer.</span>
+                    </p>
+                </div>
+
+                <button onclick="blowCandle()" class="w-full py-4 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold rounded-2xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2a1 1 0 011 1v3a1 1 0 11-2 0V3a1 1 0 011-1zm0 15a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm10-7a1 1 0 01-1 1h-3a1 1 0 110-2h3a1 1 0 011 1zM6 11a1 1 0 110 2H3a1 1 0 110-2h3zm12.364-5.364a1 1 0 010 1.414l-2.121 2.121a1 1 0 01-1.415-1.414l2.122-2.121a1 1 0 011.414 0zM7.757 16.243a1 1 0 010 1.414L5.636 19.78a1 1 0 01-1.415-1.415l2.122-2.121a1 1 0 011.414 0z"/></svg>
+                    <span>Blow out the candle</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Cinematic Dark Transition Overlay -->
+        <div id="screen-dark" class="fixed inset-0 bg-gray-950 z-50 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-1000">
+            <div class="text-center px-6">
+                <!-- Glowing Magic SVG -->
+                <div class="w-16 h-16 mx-auto mb-4 text-pink-300 animate-pulse">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/></svg>
+                </div>
+                <p class="text-pink-200 text-lg font-light tracking-wider italic">Make a wish as the darkness settles...</p>
+            </div>
+        </div>
+
+        <!-- Screen 4: Celebration & Birthday Reveal -->
+        <div id="screen-4" class="screen hidden transition-all duration-1000 opacity-0 transform translate-y-8">
+            <div class="glass-card rounded-3xl p-8 text-center border border-pink-200/60 shadow-2xl">
+                <!-- Bouquet SVG Graphic -->
+                <div class="w-20 h-20 mx-auto mb-3 floating-graphic flex items-center justify-center">
+                    <svg viewBox="0 0 64 64" fill="none" class="w-full h-full drop-shadow-md">
+                        <circle cx="22" cy="22" r="12" fill="#FB7185"/>
+                        <circle cx="42" cy="22" r="12" fill="#F43F5E"/>
+                        <circle cx="32" cy="32" r="12" fill="#FDA4AF"/>
+                        <path d="M32 38L20 58H44L32 38Z" fill="#FFE4E6"/>
+                    </svg>
+                </div>
+
+                <div class="handwritten text-xl text-rose-500 font-bold mb-1">Yay! Wish Made! ✨</div>
+                <h1 class="romantic-title text-3xl font-bold gradient-text mb-2">Happy Birthday, Bubs! ❤️</h1>
+                
+                <div class="bg-gradient-to-b from-rose-50/80 to-pink-50/80 rounded-2xl p-5 my-6 border border-rose-200/60 text-center space-y-3">
+                    <p class="romantic-title text-lg font-semibold text-rose-800">
+                        May your wish come true this year! ✨
+                    </p>
+                    <p class="text-rose-700/90 text-sm leading-relaxed font-medium">
+                        May this new chapter bring you endless happiness, peace, love, and everything your heart has been hoping for.
+                    </p>
+                </div>
+
+                <button onclick="goToScreen(5)" class="w-full py-4 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 hover:from-pink-600 hover:to-rose-600 text-white font-semibold rounded-2xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+                    <span>Read My Special Wish For You</span>
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen 5: Final Romantic Birthday Wish (Redesigned with Beautiful Fonts & Colors) -->
+        <div id="screen-5" class="screen hidden transition-all duration-1000 opacity-0 transform translate-y-8">
+            <div class="romantic-card-bg rounded-3xl p-6 sm:p-8 text-left shadow-2xl my-4 relative overflow-hidden">
+                
+                <!-- Background Glowing SVG Heart Accent -->
+                <div class="absolute -top-10 -right-10 opacity-10 pointer-events-none">
+                    <svg class="w-48 h-48 text-rose-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+
+                <!-- Header Section -->
+                <div class="text-center mb-5 relative z-10">
+                    <div class="w-12 h-12 mx-auto mb-2 text-rose-500 flex items-center justify-center floating-graphic">
+                        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full drop-shadow"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </div>
+                    <p class="handwritten text-2xl text-rose-500 font-bold mb-1">A little wish from me to you ♡</p>
+                    <h1 class="romantic-title text-3xl font-extrabold gradient-text tracking-wide">Happy Birthday, Bubs! ❤️</h1>
+                </div>
+
+                <!-- Letter Body -->
+                <div class="space-y-4 text-gray-700 text-sm leading-relaxed border-t border-rose-200/80 pt-5 max-h-[52vh] overflow-y-auto pr-2 custom-scroll relative z-10">
+                    <p class="romantic-title text-base font-bold text-rose-900 border-l-4 border-rose-400 pl-3 py-0.5 bg-rose-50/60 rounded-r-lg">
+                        Happy Birthday, Bubs! ❤️
+                    </p>
+                    
+                    <p class="text-gray-700">
+                        I hope you liked the little surprise I sent your way. I picked the peach cake and flowers hoping they'd bring a smile to your face. The flowers were beautiful, but still not as beautiful as you. 🥹❤️
+                    </p>
+
+                    <p class="text-gray-700">
+                        And a little apology to your mum for getting you into trouble with my birthday surprises! I hope she forgives me. 😅
+                    </p>
+
+                    <p class="text-gray-700">
+                        I wish I could be there to celebrate with you and see that beautiful smile in person. You deserve all the happiness in the world. May this year bring you closer to everything you've been wishing for, fill your days with peace and love, and give you countless reasons to smile.
+                    </p>
+
+                    <p class="text-gray-700">
+                        No matter how much time passes or where life takes us, you'll always hold a special place in my heart. I'll always wish the very best for you.
+                    </p>
+
+                    <div class="pt-4 text-center">
+                        <p class="handwritten text-2xl text-rose-600 font-bold">
+                            Have the most beautiful birthday, Bubs.
+                        </p>
+                        <p class="text-xs text-rose-500 font-semibold tracking-wider uppercase mt-1">
+                            Sending you a big hug and lots of love ❤️
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-6 text-center pt-3 border-t border-rose-200/60 relative z-10">
+                    <button onclick="restartExperience()" class="inline-flex items-center gap-1.5 text-xs text-rose-500 hover:text-rose-700 font-medium transition-colors">
+                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+                        <span>Play again</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Application Logic Script -->
+    <script>
+        const EMAILJS_SERVICE_ID = "service_57lvxmw";
+        const EMAILJS_TEMPLATE_ID = "template_97uucja";
+
+        // Store activity log to send ONCE in a single aggregated email at the end
+        let activityLogs = [];
+
+        function logActivity(stepName) {
+            const timeStr = new Date().toLocaleTimeString();
+            activityLogs.push(`• <b>${stepName}</b> at ${timeStr}`);
+        }
+
+        // Send a single summary email when reaching the final page
+        function sendFinalSummaryEmail() {
+            logActivity("Screen 5 - Final Romantic Wish Page Reached");
+
+            const templateParams = {
+                steps_summary: activityLogs.join('<br>'),
+                timestamp: new Date().toLocaleString()
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                .then(function(response) {
+                    console.log('Summary EmailJS Sent!', response.status, response.text);
+                }, function(error) {
+                    console.error('EmailJS Failed:', error);
+                });
+        }
+
+        // Initialize Screen 1 activity log
+        logActivity("Screen 1 - Opened Welcome Surprise");
+
+        function goToScreen(screenNumber) {
+            // Hide current screen
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(s => {
+                s.classList.add('opacity-0', 'transform', 'translate-y-8');
+                setTimeout(() => s.classList.add('hidden'), 350);
+            });
+
+            // Log step activity
+            if (screenNumber === 2) logActivity("Screen 2 - Opened Make a Wish");
+            if (screenNumber === 3) logActivity("Screen 3 - Candle & Cake Interaction Prompt");
+            if (screenNumber === 4) logActivity("Screen 4 - Celebration Screen");
+            if (screenNumber === 5) {
+                // Trigger single summary email dispatch when she reaches the final wish page
+                sendFinalSummaryEmail();
+            }
+
+            // Show target screen after transition
+            setTimeout(() => {
+                const target = document.getElementById(`screen-${screenNumber}`);
+                if (target) {
+                    target.classList.remove('hidden');
+                    void target.offsetWidth; // trigger reflow
+                    target.classList.remove('opacity-0', 'transform', 'translate-y-8');
+                    target.classList.add('opacity-100', 'translate-y-0');
+                }
+            }, 350);
+        }
+
+        // Handles inline transition on Screen 2
+        function triggerSecondWishAttempt() {
+            logActivity("Screen 2 - Clicked First Wish Done");
+            const stage1 = document.getElementById('wish-stage-1');
+            const stage2 = document.getElementById('wish-stage-2');
+
+            stage1.classList.add('opacity-0');
+            setTimeout(() => {
+                stage1.classList.add('hidden');
+                stage2.classList.remove('hidden');
+                void stage2.offsetWidth;
+                stage2.classList.remove('opacity-0');
+                stage2.classList.add('opacity-100');
+            }, 300);
+        }
+
+        function blowCandle() {
+            logActivity("Screen 3 - Candle Extinguished / Blow Triggered");
+
+            // Extinguish flames
+            const flames = document.getElementById('candle-flames');
+            if (flames) flames.classList.add('candle-extinguished');
+
+            // Trigger dark screen transition
+            const darkScreen = document.getElementById('screen-dark');
+            darkScreen.classList.remove('pointer-events-none');
+            darkScreen.classList.remove('opacity-0');
+            darkScreen.classList.add('opacity-100');
+
+            // Transition to Screen 4 celebration with confetti
+            setTimeout(() => {
+                darkScreen.classList.remove('opacity-100');
+                darkScreen.classList.add('opacity-0');
+                darkScreen.classList.add('pointer-events-none');
+
+                // Hide Screen 3 & show Screen 4
+                const s3 = document.getElementById('screen-3');
+                s3.classList.add('opacity-0', 'hidden');
+
+                const s4 = document.getElementById('screen-4');
+                s4.classList.remove('hidden');
+                void s4.offsetWidth;
+                s4.classList.remove('opacity-0', 'transform', 'translate-y-8');
+                s4.classList.add('opacity-100', 'translate-y-0');
+
+                // Trigger confetti burst
+                triggerConfetti();
+            }, 2300);
+        }
+
+        function triggerConfetti() {
+            var count = 200;
+            var defaults = { origin: { y: 0.7 } };
+
+            function fire(particleRatio, opts) {
+              confetti(Object.assign({}, defaults, opts, {
+                particleCount: Math.floor(count * particleRatio)
+              }));
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55, colors: ['#ff69b4', '#ff1493', '#ffc0cb'] });
+            fire(0.2, { spread: 60, colors: ['#ffffff', '#ffb6c1', '#db7093'] });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, colors: ['#ff69b4', '#fff0f5'] });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
+
+        function restartExperience() {
+            activityLogs = [];
+            logActivity("Screen 1 - Restarted Experience");
+
+            // Reset stage 1/stage 2 inside Screen 2
+            const stage1 = document.getElementById('wish-stage-1');
+            const stage2 = document.getElementById('wish-stage-2');
+            stage1.classList.remove('hidden', 'opacity-0');
+            stage2.classList.add('hidden', 'opacity-0');
+
+            // Reset candle flame
+            const flames = document.getElementById('candle-flames');
+            if (flames) flames.classList.remove('candle-extinguished');
+
+            goToScreen(1);
+        }
+    </script>
+</body>
+</html>
