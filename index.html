@@ -10,13 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <!-- EmailJS: sends a single notification when the final letter page is reached -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        window.addEventListener('load', function () {
-            if (window.emailjs) emailjs.init("ioHK4BbS4ODcoC6Hs");
-        });
-    </script>
+    <!-- EmailJS Browser SDK v5: notification when the final letter page is opened -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js"></script>
     <style>
         html { scroll-behavior: smooth; }
         body {
@@ -217,7 +212,7 @@
                 <div class="bg-pink-50/90 rounded-2xl p-4 mb-5 border border-pink-100">
                     <p id="candle-hint" class="text-gray-600 text-sm leading-relaxed">
                         Take a deep breath and blow towards your screen! 💨<br>
-                        <span class="text-xs text-rose-500 font-medium">A little mic-shy? No worries just tap the cake and let those candles go! 🤭</span>
+                        <span class="text-xs text-rose-500 font-medium">A little mic-shy? No worries, just tap the cake and let those candles go! 🤭</span>
                     </p>
                 </div>
 
@@ -348,29 +343,53 @@
         const EMAILJS_SERVICE_ID = "service_57lvxmw";
         const EMAILJS_TEMPLATE_ID = "template_97uucja";
 
-        // This confirms that the final letter page was opened; it cannot confirm that the letter was read.
-        function sendFinalPageNotification() {
+        // Sends one notification after the final birthday letter page is opened.
+        // A successful request confirms the page event, not that the letter was read.
+        async function sendFinalPageNotification() {
             if (finalPageNotificationSent) return;
-            finalPageNotificationSent = true;
+
+            // The final page is reached several screens into the experience, but wait briefly
+            // in case the EmailJS CDN is still loading on a slower mobile connection.
+            for (let attempt = 0; !window.emailjs && attempt < 20; attempt++) {
+                await new Promise(resolve => setTimeout(resolve, 250));
+            }
 
             if (!window.emailjs) {
-                console.warn('EmailJS did not load; final-page notification was not sent.');
+                console.error('EmailJS SDK failed to load. Check the CDN/network connection.');
                 return;
             }
 
+            const openedAt = new Date();
+            const readableTime = openedAt.toLocaleString('en-GB', {
+                dateStyle: 'full', timeStyle: 'long'
+            });
             const templateParams = {
                 steps_summary: 'Bubs reached the final birthday letter page.',
-                timestamp: new Date().toLocaleString()
+                timestamp: readableTime,
+                message: 'The final birthday letter page was opened.',
+                event: 'Final birthday letter page opened',
+                page: 'Final birthday letter',
+                name: 'Bubs',
+                visited_at: readableTime
             };
 
-            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-                .then(function (response) {
-                    console.log('Final-page notification sent.', response.status, response.text);
-                })
-                .catch(function (error) {
-                    console.error('Final-page notification failed:', error);
-                    finalPageNotificationSent = false;
-                });
+            try {
+                const response = await window.emailjs.send(
+                    EMAILJS_SERVICE_ID,
+                    EMAILJS_TEMPLATE_ID,
+                    templateParams,
+                    { publicKey: 'ioHK4BbS4ODcoC6Hs' }
+                );
+                if (response && response.status === 200) {
+                    finalPageNotificationSent = true;
+                    console.info('EmailJS final-page notification accepted:', response.status, response.text);
+                } else {
+                    console.error('EmailJS returned an unexpected response:', response);
+                }
+            } catch (error) {
+                // Leave the flag false so revisiting the final page can retry.
+                console.error('EmailJS final-page notification failed:', error?.status, error?.text || error);
+            }
         }
 
         function stopMicrophone() {
@@ -434,7 +453,7 @@
             if (candleBlown) return;
             const micButton = document.getElementById('mic-button');
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.AudioContext) {
-                setMicMessage('This browser can’t use microphone blowing right now. No worries just tap the cake! 🎂');
+                setMicMessage('This browser can’t use microphone blowing right now. No worries, just tap the cake! 🎂');
                 return;
             }
             try {
